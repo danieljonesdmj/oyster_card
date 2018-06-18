@@ -1,9 +1,9 @@
 require 'oystercard'
 
 describe Oystercard do
-  it "#takeoff" do
-#instance = Oystercard.new
-  expect(subject.takeoff).to eq "test"
-
-end
+  describe '#balance' do
+    it 'Starts with a balance of zero' do
+      expect(Oystercard.new.balance).to eq(0)
+    end
+  end
 end
