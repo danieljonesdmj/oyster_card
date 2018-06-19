@@ -20,22 +20,34 @@ describe Oystercard do
 
     describe '#deduct()' do
       it 'Deduct the balance with method argument' do
-        expect{subject.deduct(10)}. to change{subject.balance}.by(-10)
+        expect{subject.send(:deduct, 10)}. to change{subject.balance}.by(-10)
       end
     end
 
     describe '#touch_in' do
       it 'Changes in_journey to true' do
+        subject.instance_variable_set(:@balance, Oystercard::MIN_BALANCE)
         subject.touch_in
         expect(subject.in_journey?).to eq true
+      end
+
+      it 'touch_in without minimum balance raises error' do
+        expect {subject.touch_in}.to raise_error "Insufficient Funds"
       end
     end
 
     describe '#touch_out' do
       it 'Changes in_journey to false' do
+        subject.instance_variable_set(:@balance, Oystercard::MIN_BALANCE)
         subject.touch_in
         subject.touch_out
         expect(subject.in_journey?).to eq false
+      end
+
+      it 'Deducts the minimum fare when #touch_out is called' do
+        subject.instance_variable_set(:@balance, Oystercard::MIN_BALANCE)
+        subject.touch_in
+        expect { subject.touch_out }. to change { subject.balance }.by(-Oystercard::MIN_BALANCE)
       end
     end
 
