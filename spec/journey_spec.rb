@@ -6,9 +6,11 @@ describe Journey do
 
   it { is_expected.to respond_to(:finish).with(1).argument }
 
+  it { is_expected.to respond_to(:complete?) }
+
   describe '#initialize' do
     it 'initializes with an empty history hash' do
-      expect(subject.history).to eq ({})
+      expect(subject.history).to eq({})
     end
   end
 
@@ -30,9 +32,23 @@ describe Journey do
       expect(subject.history).to eq "Oxford St" => "Notting Hill"
     end
   end
+
+  describe '#complete?' do
+    it 'changes #complete? to false' do
+      subject.start('Oxford St')
+      expect(subject).not_to be_complete
+    end
+
+    it 'changes #complete? to true' do
+      subject.start('Oxford St')
+      subject.finish('Notting Hill')
+      expect(subject).to be_complete
+    end
+  end
+
   #
   # it { is_expected.to respond_to(:fare) }
   #
-  # it { is_expected.to respond_to(:in_journey?) }
+
 
 end

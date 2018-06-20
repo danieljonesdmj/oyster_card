@@ -13,13 +13,14 @@ class Journey
 
   def finish(exit_station)
     @history[@entry_station] = exit_station
+    @entry_station = nil
   end
-  
+
   #
   # def fare
   # end
   #
-  # def in_journey?
-  # end
-
+  def complete?
+    !entry_station
+  end
 end

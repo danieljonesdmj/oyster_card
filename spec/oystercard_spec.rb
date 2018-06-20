@@ -32,61 +32,29 @@ describe Oystercard do
     end
   end
 
-  it { is_expected.to respond_to(:touch_in).with(1).argument }
-  it { is_expected.to respond_to(:touch_out).with(1).argument }
+  it { is_expected.to respond_to(:touch_in) }
+  it { is_expected.to respond_to(:touch_out) }
 
   describe '#touch_in' do
-    it 'Changes in_journey to true' do
-      oystercard.instance_variable_set(:@balance, min)
-      oystercard.touch_in(entry_station)
-      expect(oystercard.in_journey?).to eq true
-    end
-
     it 'touch_in without minimum balance raises error' do
       error = "Insufficient Funds: Must have at least £#{min}"
-      expect { oystercard.touch_in(entry_station) }.to raise_error(error)
-    end
-
-    it 'should remember entry_station after touch_in' do
-      oystercard.top_up(min)
-      expect { oystercard.touch_in(entry_station) }.to \
-        change { oystercard.entry_station }.to entry_station
+      expect { oystercard.touch_in }.to raise_error(error)
     end
   end
 
   describe '#touch_out' do
-
     it 'Changes entry_station to nil' do
       oystercard.instance_variable_set(:@balance, min)
-      oystercard.touch_in(entry_station)
-      oystercard.touch_out(exit_station)
+      oystercard.touch_in
+      oystercard.touch_out
       expect(oystercard.entry_station).to eq nil
     end
 
     it 'Deducts the minimum fare when #touch_out is called' do
       oystercard.instance_variable_set(:@balance, min)
-      oystercard.touch_in(entry_station)
-      expect { oystercard.touch_out(exit_station) }.to \
+      oystercard.touch_in
+      expect { oystercard.touch_out }.to \
         change { oystercard.balance }.by(-min)
-    end
-
-    it '#touch_out pushes complete journey into @journeys' do
-      oystercard.top_up(min)
-      oystercard.touch_in(entry_station)
-      oystercard.touch_out(exit_station)
-      expect(oystercard.journeys).to eq(entry_station => exit_station)
-    end
-  end
-
-  describe '#in_journey?' do
-    it 'Returns true or false' do
-      expect(oystercard.in_journey?).to eq(true).or eq(false)
-    end
-  end
-
-  describe '@journeys' do
-    it 'Initializes with an empty @journeys hash' do
-      expect(oystercard.journeys).to eq({})
     end
   end
 end
