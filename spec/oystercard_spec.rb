@@ -55,6 +55,7 @@ describe Oystercard do
   end
 
   describe '#touch_out' do
+
     it 'Changes entry_station to nil' do
       oystercard.instance_variable_set(:@balance, min)
       oystercard.touch_in(entry_station)
