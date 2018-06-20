@@ -16,10 +16,13 @@ class Journey
     @entry_station = nil
   end
 
-  #
-  # def fare
+  # def bad_journey?
+  #   history.include?(nil)
   # end
-  #
+
+  def fare
+  end
+
   def complete?
     !entry_station
   end

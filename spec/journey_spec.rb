@@ -8,6 +8,10 @@ describe Journey do
 
   it { is_expected.to respond_to(:complete?) }
 
+  it { is_expected.to respond_to(:fare) }
+
+  it { is_expected.to respond_to(:bad_journey?) }
+
   describe '#initialize' do
     it 'initializes with an empty history hash' do
       expect(subject.history).to eq({})
@@ -46,9 +50,15 @@ describe Journey do
     end
   end
 
-  #
-  # it { is_expected.to respond_to(:fare) }
-  #
+  # describe '#bad_journey?' do
+  #   it 'returns true if there is no exit station' do
+  #     subject.start('Oxford St')
+  #     expect(subject).to be_bad_journey
+  #   end
+  # end
+
+
+
 
 
 end
