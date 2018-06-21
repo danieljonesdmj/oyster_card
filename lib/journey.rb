@@ -1,6 +1,8 @@
 class Journey
+  attr_reader :history, :entry_station, :all_history
 
-  attr_reader :history, :entry_station
+  PENALTY_FARE = 6
+  MINIMUM_FARE = 1
 
   def initialize
     @history = {}
@@ -16,11 +18,21 @@ class Journey
     @entry_station = nil
   end
 
-  # def bad_journey?
-  #   history.include?(nil)
-  # end
+  def no_touch_in?
+    history.key? nil
+  end
+
+  def no_touch_out?
+    history.value? nil
+  end
+
+  def penalty?
+    no_touch_in? || no_touch_out?
+  end
 
   def fare
+    return PENALTY_FARE if penalty?
+    MINIMUM_FARE
   end
 
   def complete?

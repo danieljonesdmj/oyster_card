@@ -1,4 +1,5 @@
 require 'oystercard'
+require 'journey'
 
 describe Oystercard do
   let(:entry_station) { double :entry_station }
@@ -32,28 +33,28 @@ describe Oystercard do
     end
   end
 
-  it { is_expected.to respond_to(:touch_in) }
+  it { is_expected.to respond_to(:touch_in).with(1).argument }
   it { is_expected.to respond_to(:touch_out) }
 
   describe '#touch_in' do
     it 'touch_in without minimum balance raises error' do
       error = "Insufficient Funds: Must have at least £#{min}"
-      expect { oystercard.touch_in }.to raise_error(error)
+      expect { oystercard.touch_in(entry_station) }.to raise_error(error)
     end
   end
 
   describe '#touch_out' do
     it 'Changes entry_station to nil' do
       oystercard.instance_variable_set(:@balance, min)
-      oystercard.touch_in
-      oystercard.touch_out
+      oystercard.touch_in(entry_station)
+      oystercard.touch_out(exit_station)
       expect(oystercard.entry_station).to eq nil
     end
 
     it 'Deducts the minimum fare when #touch_out is called' do
       oystercard.instance_variable_set(:@balance, min)
-      oystercard.touch_in
-      expect { oystercard.touch_out }.to \
+      oystercard.touch_in(entry_station)
+      expect { oystercard.touch_out(exit_station) }.to \
         change { oystercard.balance }.by(-min)
     end
   end
